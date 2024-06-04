@@ -25,8 +25,7 @@ class VehicleImage{
     public String getImageUrl()                 { return imageUrl; }
     public void setImageUrl(String imageUrl)    { this.imageUrl = imageUrl; }
 
-    public VehicleImage(Long id, Vehicle vehicle, String imageUrl) {
-        this.id = id;
+    public VehicleImage(Vehicle vehicle, String imageUrl) {
         this.vehicle = vehicle;
         this.imageUrl = imageUrl;
     }

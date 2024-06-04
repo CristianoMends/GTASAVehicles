@@ -1,6 +1,8 @@
 package com.api.gtasavehicles.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +17,6 @@ public class Vehicle {
 
     @Column(nullable = false, length = 50)
     private String type;
-
-    @Column(nullable = false)
-    private String gif;
-
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VehicleImage> images;
 
@@ -30,17 +28,24 @@ public class Vehicle {
     public void setName(String name)                    { this.name = name; }
     public String getType()                             { return type; }
     public void setType(String type)                    { this.type = type; }
-    public String getGif()                              { return gif; }
-    public void setGif(String gif)                      { this.gif = gif; }
-    public List<VehicleImage> getImages()               { return images; }
-    public void setImages(List<VehicleImage> images)    { this.images = images; }
+    public List<String> getImages()               {
+        List<String> urls = new ArrayList<>();
+        for (VehicleImage v : images){
+            urls.add(v.getImageUrl());
+        }
+        return urls;
+    }
+    public void setImages(List<String> images) {
+        this.images = new ArrayList<>();
+        for (String image:images){
+            this.images.add(new VehicleImage(this, image));
+        }
+    }
 
-    public Vehicle(Long id, String name, String type, String gif, List<VehicleImage> images) {
-        this.id = id;
+    public Vehicle(String name, String type, List<String> images) {
         this.name = name;
         this.type = type;
-        this.gif = gif;
-        this.images = images;
+        setImages(images);
     }
 
     public Vehicle() {
